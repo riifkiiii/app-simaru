@@ -1,3 +1,4 @@
+import 'package:appssimaru/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:appssimaru/screens/register.dart';
 
@@ -6,8 +7,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  
-const MyApp({super.key});
+  const MyApp({super.key});
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ const MyApp({super.key});
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const RegisterScreen(),
+      home: const LoginScreen(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:appssimaru/model/booking.dart';
 import 'package:appssimaru/model/ruangan.dart';
 import 'package:http/http.dart' show Client;
 
@@ -80,6 +81,7 @@ class ApiClient {
     }
   }
 
+// API RUANGAN
   Future<List<Ruangan>> getRuanganData(String accessToken) async {
     try {
       final response = await client.get(
@@ -151,6 +153,96 @@ class ApiClient {
     try {
       final response = await client.post(
         Uri.parse("https://simaru.amisbudi.cloud/api/ruangans/$id/update"),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'content-type': 'application/json'
+        },
+        body: jsonEncode(data),
+        // queryParameters: {'apikey': ApiSecret.apiKey},
+        // options: Options(headers: {'X-LoginRadius-Sott': ApiSecret.sott})
+      );
+      // if (response.statusCode == 200) {
+      //   return response;
+      // } else {
+      return response;
+      // }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  // API BOOKING RUANGAN
+  Future<List<Booking>> getBookingData(String accessToken) async {
+    try {
+      final response = await client.get(
+        Uri.parse('https://simaru.amisbudi.cloud/api/bookings/all'),
+        // queryParameters: {'apikey': ApiSecret.apiKey},
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'content-type': 'application/json'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return bookingFromJson(response.body);
+      } else {
+        return [];
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<dynamic> addBooking(
+      String accessToken, Map<String, dynamic>? data) async {
+    try {
+      final response = await client.post(
+        Uri.parse("https://simaru.amisbudi.cloud/api/bookings/create"),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'content-type': 'application/json'
+        },
+        body: jsonEncode(data),
+        // queryParameters: {'apikey': ApiSecret.apiKey},
+        // options: Options(headers: {'X-LoginRadius-Sott': ApiSecret.sott})
+      );
+      // if (response.statusCode == 200) {
+      //   return response;
+      // } else {
+      return response;
+      // }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<dynamic> delBooking(String accessToken, dynamic id) async {
+    try {
+      final response = await client.delete(
+        Uri.parse("https://simaru.amisbudi.cloud/api/bookings/$id/delete"),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'content-type': 'application/json'
+        },
+        // body: jsonEncode(data),
+        // queryParameters: {'apikey': ApiSecret.apiKey},
+        // options: Options(headers: {'X-LoginRadius-Sott': ApiSecret.sott})
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<dynamic> updateBooking(
+      String accessToken, Map<String, dynamic>? data, dynamic id) async {
+    try {
+      final response = await client.post(
+        Uri.parse("https://simaru.amisbudi.cloud/api/bookings/$id/update"),
         headers: {
           'Authorization': 'Bearer $accessToken',
           'content-type': 'application/json'

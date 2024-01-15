@@ -1,3 +1,4 @@
+import 'package:appssimaru/screens/booking/booking_screen.dart';
 import 'package:appssimaru/screens/home.dart';
 import 'package:appssimaru/screens/ruangan/ruangan_screen.dart';
 import 'package:flutter/material.dart';
@@ -62,11 +63,7 @@ class _HomePageState extends State<HomePage> {
       body: <Widget>[
         const HomeScreen(),
         RuanganScreen(),
-        Container(
-          color: Colors.blue,
-          alignment: Alignment.center,
-          child: const Text('Booking Ruangan'),
-        ),
+        BookingScreen()
       ][currentPageIndex],
     );
   }
