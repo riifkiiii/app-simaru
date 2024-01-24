@@ -24,9 +24,12 @@ class _BookingAddScreenState extends State<BookingAddScreen> {
   Client client = Client();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController bookingController = TextEditingController();
+
   final TextEditingController userIdController = TextEditingController();
+  final TextEditingController ruanganId = TextEditingController();
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
+
   final ApiClient _apiClient = ApiClient();
   String accesstoken = '';
   // Select Ruangan
@@ -91,13 +94,13 @@ class _BookingAddScreenState extends State<BookingAddScreen> {
       ));
 
       Map<String, dynamic> bookingData = {
-        "ruangan_id": bookingController.text,
+        "ruangan_id": ruanganId.text,
         "user_id": userIdController.text,
         "start_book": startDateController.text,
         "end_book": endDateController.text
       };
 
-      final res = await _apiClient.addRuangan(accesstoken, bookingData);
+      final res = await _apiClient.addBooking(accesstoken, bookingData);
 
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
@@ -161,37 +164,52 @@ class _BookingAddScreenState extends State<BookingAddScreen> {
                     ),
                     SizedBox(height: size.height * 0.05),
 
-                    DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: 'Pilih Ruangan',
-                      ),
-                      value: selectedRuangan,
-                      items: ruanganOptions.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedRuangan = newValue;
-                        });
-                      },
-                    ),
+                    // DropdownButtonFormField<String>(
+                    //   decoration: const InputDecoration(
+                    //     labelText: 'Pilih Ruangan',
+                    //   ),
+                    //   value: selectedRuangan,
+                    //   items: ruanganOptions.map((String value) {
+                    //     return DropdownMenuItem<String>(
+                    //       value: value,
+                    //       child: Text(value),
+                    //     );
+                    //   }).toList(),
+                    //   onChanged: (newValue) {
+                    //     setState(() {
+                    //       selectedRuangan = newValue;
+                    //     });
+                    //   },
+                    // ),
 
                     SizedBox(height: size.height * 0.03),
-
                     TextFormField(
+                      validator: (value) => Validator.validateText(value ?? ""),
                       controller: userIdController,
-                      keyboardType: TextInputType.datetime,
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: "Pembooking",
+                        hintText: "User ID",
                         isDense: true,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                     ),
+
+                    SizedBox(height: size.height * 0.03),
+                    TextFormField(
+                      validator: (value) => Validator.validateText(value ?? ""),
+                      controller: ruanganId,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        hintText: "Ruangan ID",
+                        isDense: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+
                     TextFormField(
                       validator: (value) => Validator.validateText(value ?? ""),
                       controller: startDateController,
